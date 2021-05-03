@@ -23,6 +23,18 @@ const pointTypes = [
     title: "یه وضعیت دیگه",
     amount: pointType2.amount,
   },
+  {
+    _id: "608fdc8e060129ac85b29121",
+    type: "bbb",
+    title: "ببب",
+    amount: 20,
+  },
+  {
+    _id: "608fdc0223de7a852081fc71",
+    type: "aaaa",
+    title: "اااا",
+    amount: 100,
+  },
 ];
 
 let projectPoints = [
