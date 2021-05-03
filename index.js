@@ -36,8 +36,15 @@ connect(`mongodb://user:123456789@0.0.0.0:27018/testdb`, {
   useUnifiedTopology: true,
   useCreateIndex: true,
 }).then(async (mongoose) => {
-  await new User({
+  new User({
     name: "kasir",
     roleId: "608fad9ea3c93ccda22610fe",
-  }).save();
+  })
+    .save()
+    .then((user) => {
+      console.dir(user, { depth: 4 });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
