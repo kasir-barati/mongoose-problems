@@ -36,15 +36,22 @@ connect(`mongodb://user:123456789@0.0.0.0:27018/testdb`, {
   useUnifiedTopology: true,
   useCreateIndex: true,
 }).then(async (mongoose) => {
-  new User({
+  await new Role({
+    _id: "608fc2f55b248fef2f2914f1",
+    title: "admin",
+  }).save();
+  await new User({
+    name: "guest",
+    roleId: "608fc2f55b248fef2f2914f1",
+  }).save();
+  await new User({
     name: "kasir",
     roleId: "608fad9ea3c93ccda22610fe",
-  })
-    .save()
-    .then((user) => {
-      console.dir(user, { depth: 4 });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  }).save();
+
+  const users = await User.find().populate("roleId").exec();
+
+  for (let user of users) {
+    console.dir(user.roleId.title, { depth: 4 });
+  }
 });
