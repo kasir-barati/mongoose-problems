@@ -1,13 +1,15 @@
-import { connect } from 'mongoose';
+import { connect, set } from 'mongoose';
 
-function connectToMongoDB() {
-    connect('mongodb://user:123456789@0.0.0.0:27017/test', {
-        useCreateIndex: true,
-        useFindAndModify: true,
-        useNewUrlParser: true,
+const connectionString = process.env.MONGODB_URI;
+
+export function connectToMongoDB() {
+    if (!connectionString) {
+        throw new Error(`empty connectionString: ${connectionString}`);
+    }
+    set('debug', true);
+    return connect(connectionString, {
+        // @ts-ignore
         useUnifiedTopology: true,
-        autoIndex: true,
+        useNewUrlParser: true,
     });
 }
-
-export { connectToMongoDB };

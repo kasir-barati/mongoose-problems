@@ -1,15 +1,66 @@
-import { MongoError } from 'mongodb';
+import { join } from 'path';
+import dotenv from 'dotenv';
+
+dotenv.config({
+    path: join(__dirname, '..', '.env'),
+});
+
 import { connectToMongoDB } from './configs/mongodb.config';
-import { ContractorModel } from './schemas/contractor.schema';
+import { UserModel } from './schemas/user.schema';
 
-connectToMongoDB();
+(async () => {
+    await connectToMongoDB();
 
-new ContractorModel({
-    contractorCanWorkWithMaterials: ['multi'],
-})
-    .save()
-    .then(() => process.exit(0))
-    .catch((error: MongoError) => {
-        console.error(error);
-        process.exit(-1);
-    });
+    for (let index = 1; index < 5; index++) {
+        console.log(
+            await UserModel.create({
+                name: 'Kasir' + index,
+                email: 'temp@temp.com' + index,
+                profile: {
+                    avatar: 'none',
+                    bio: 'nodejs developer',
+                },
+            }),
+        );
+    }
+
+    for (let index = 1; index < 5; index++) {
+        await UserModel.updateOne(
+            { email: 'temp@temp.com' + index },
+            {
+                $set: {
+                    'profile.avatar': 'second new avatar',
+                },
+            },
+        );
+        console.log(await find('temp@temp.com' + index));
+
+        await UserModel.updateOne(
+            { email: 'temp@temp.com' + index },
+            {
+                $set: {
+                    'name': 'kasir san',
+                    'profile.avatar': 'third new avatar',
+                },
+            },
+        );
+        console.log(await find('temp@temp.com' + index));
+
+        await UserModel.updateOne(
+            { email: 'temp@temp.com' + index },
+            {
+                $set: {
+                    name: 'kasir san',
+                    profile: {
+                        avatar: 'first new avatar',
+                    },
+                },
+            },
+        );
+        console.log(await find('temp@temp.com' + index));
+    }
+})();
+
+function find(email: string) {
+    return UserModel.findOne({ email });
+}
