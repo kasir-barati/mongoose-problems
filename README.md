@@ -6,4 +6,6 @@ In this repository i will share my jesus like christ with a shit 3rd party packa
 
 1. `npm i`
 2. `docker-compose up`
-3. `npm start`
+3. `npm run start:debug`
+
+**now you can see the logs**
