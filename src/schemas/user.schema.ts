@@ -13,19 +13,19 @@ export interface UserDocument extends Document {
         avatar?: string;
     };
 }
-export interface GuestDocument extends Document {
+export interface GuestDocument extends UserDocument {
     ip: string;
-    activity: {
-        page: string;
-        exitedDate: Date;
-        enteredDate: Date;
+    activity?: {
+        page?: string;
+        exitedDate?: Date;
+        enteredDate?: Date;
     };
 }
-export interface AdminDocument extends Document {
+export interface AdminDocument extends UserDocument {
     password: string;
-    employeeInfo: {
-        nationalId: string;
-        employeeId: string;
+    employeeInfo?: {
+        nationalId?: string;
+        employeeId?: string;
     };
 }
 
@@ -60,6 +60,11 @@ const guestSchema = new Schema<GuestDocument>({
 });
 
 export const UserModel = model<UserDocument>('user', userSchema);
-
-UserModel.discriminator(UserDiscriminator.admin, adminSchema);
-UserModel.discriminator(UserDiscriminator.guest, guestSchema);
+export const AdminModel = UserModel.discriminator<AdminDocument>(
+    UserDiscriminator.admin,
+    adminSchema,
+);
+export const GuestModel = UserModel.discriminator<GuestDocument>(
+    UserDiscriminator.guest,
+    guestSchema,
+);

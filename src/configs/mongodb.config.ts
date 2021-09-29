@@ -7,6 +7,8 @@ export function connectToMongoDB() {
         throw new Error(`empty connectionString: ${connectionString}`);
     }
     set('debug', true);
+    // do not resolve my problem
+    // set('useFindAndModify', false);
     return connect(connectionString, {
         // @ts-ignore
         useUnifiedTopology: true,

@@ -10,6 +10,8 @@ import {
     UserModel,
     userDiscriminatorKey,
     UserDiscriminator,
+    AdminModel,
+    GuestModel,
 } from './schemas/user.schema';
 
 (async () => {
@@ -17,14 +19,14 @@ import {
 
     console.log(
         'guest user \n\r\n\r',
-        await UserModel.create({
+        await GuestModel.create({
             name: 'Guest Kasir',
             email: 'guest@temp.com',
             profile: {
                 avatar: 'guest',
                 bio: 'unknown',
             },
-            [userDiscriminatorKey]: UserDiscriminator.guest,
+            // [userDiscriminatorKey]: UserDiscriminator.guest,
             ip: '192.168.1.1',
             activity: {
                 page: 'about-us',
@@ -57,11 +59,11 @@ import {
         '\n\r\n\r',
     );
 
-    await UserModel.updateOne(
+    await GuestModel.updateOne(
         { email: 'guest@temp.com' },
         {
             $set: {
-                [userDiscriminatorKey]: UserDiscriminator.guest,
+                // [userDiscriminatorKey]: UserDiscriminator.guest,
                 'profile.avatar': 'custom new avatar',
                 'activity.page': 'index',
                 'ip': '195.86.5.123',
@@ -70,6 +72,7 @@ import {
     );
     console.log(await find('guest@temp.com'));
 
+    // #FIXME: wrong usage
     await UserModel.updateOne(
         { email: 'admin@temp.com' },
         {
@@ -90,12 +93,12 @@ import {
         '\n\r\n\r',
     );
 
-    await UserModel.updateOne(
+    await GuestModel.updateOne(
         { email: 'guest@temp.com' },
         {
             $set: {
                 name: 'kasir san name updated',
-                [userDiscriminatorKey]: UserDiscriminator.guest,
+                // [userDiscriminatorKey]: UserDiscriminator.guest,
                 profile: {
                     avatar: 'updated avatar',
                 },
@@ -106,6 +109,7 @@ import {
     );
     console.log(await find('guest@temp.com'));
 
+    // #FIXME: wrong usage
     await UserModel.updateOne(
         { email: 'admin@temp.com' },
         {
