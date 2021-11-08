@@ -12,6 +12,11 @@ export interface UserDocument extends Document {
         bio?: string;
         avatar?: string;
     };
+    meta?: {
+        lastLoginDate: Date;
+        rateOfEngagement: number;
+        genesisLoginDate: Date;
+    };
 }
 export interface GuestDocument extends UserDocument {
     ip: string;
@@ -37,6 +42,11 @@ const userSchema = new Schema<UserDocument>(
             bio: String,
             avatar: String,
         },
+        meta: {
+            lastLoginDate: { type: Date, required: false },
+            rateOfEngagement: { type: Number, required: false },
+            genesisLoginDate: { type: Date, required: false },
+        },
     },
     {
         timestamps: true,
@@ -60,11 +70,11 @@ const guestSchema = new Schema<GuestDocument>({
 });
 
 export const UserModel = model<UserDocument>('user', userSchema);
-export const AdminModel = UserModel.discriminator<AdminDocument>(
+export const AdminModel = UserModel.discriminator(
     UserDiscriminator.admin,
     adminSchema,
 );
-export const GuestModel = UserModel.discriminator<GuestDocument>(
+export const GuestModel = UserModel.discriminator(
     UserDiscriminator.guest,
     guestSchema,
 );

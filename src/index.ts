@@ -33,6 +33,11 @@ import {
                 exitedDate: new Date('2000'),
                 enteredDate: new Date('2020'),
             },
+            meta: {
+                genesisLoginDate: new Date('2010'),
+                lastLoginDate: new Date('2009'),
+                rateOfEngagement: 5,
+            },
         }),
     );
     console.log(
@@ -93,6 +98,12 @@ import {
         '\n\r\n\r',
     );
 
+    const meta = {
+        genesisLoginDate: new Date('2013'),
+        lastLoginDate: new Date('2011'),
+        rateOfEngagement: 15,
+    };
+
     await GuestModel.updateOne(
         { email: 'guest@temp.com' },
         {
@@ -104,6 +115,7 @@ import {
                 },
                 activity: { page: 'index' },
                 ip: '195.86.5.123',
+                meta,
             },
         },
     );
